@@ -52,7 +52,6 @@
      <Compile Include="Assets\Items.cs" />
      <Compile Include="Assets\Movement.cs" />
      <Compile Include="Assets\camMove.cs" />
-     <Compile Include="Assets\gameInit.cs" />
      <Compile Include="Assets\generateWorld.cs" />
      <Compile Include="Assets\tileproperties.cs" />
      <Compile Include="Assets\worldgenerator.cs" />

@@ -17,12 +17,13 @@ public class tileproperties : MonoBehaviour {
     Items.plants plant = null;
     Items.fruits fruit = null;
 
-    public bool plowed;
+    bool plowed;
     bool plowable;
+    bool plantable;
     bool planted;
     bool growing;
     bool harvestable;
-
+    
     int water;
 
     public int ID = 10;
@@ -33,6 +34,7 @@ public class tileproperties : MonoBehaviour {
     public void setPlowed(GameObject tile)
     {
         plowed = true;
+        plantable = true;
         var rend = tile.GetComponent<Renderer>();
         rend.material = plowedTex;
     }
@@ -40,7 +42,10 @@ public class tileproperties : MonoBehaviour {
     { return plowable; }
     public bool getPlanted()
     { return planted; }
-    
+    public bool getPlantable()
+    {
+        return plantable;
+    }
     public int get_seedID()
     { if (planted)
         {
@@ -64,6 +69,7 @@ public class tileproperties : MonoBehaviour {
         }
         else { return 0; }
     }
+
     public void setSeed(Items.seeds seedToSet)
     {
         seed = items.cloneSeed(seedToSet);
@@ -77,18 +83,17 @@ public class tileproperties : MonoBehaviour {
         rend.material = plantTex;
         planted = true;
         seed = null;
-        
     }
     public void setFruit(Items.fruits fruitToSet)
     {
         fruit = items.cloneFruit(fruitToSet);
     }
-    
 	// Use this for initialization
 	void Start () {
         planted = false;
+        plantable = false;
+
         plowedTex = Resources.Load("Materials/plowed") as Material;
-        
         items = GameObject.Find("wrldctrl").GetComponent<Itemlist>();
 
         var rend = gameObject.GetComponent<Renderer>();

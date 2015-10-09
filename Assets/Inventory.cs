@@ -153,8 +153,10 @@ public class Inventory : MonoBehaviour {
                         return "hand";
                 }
             }
+            getNextItem();
             return curCategory;
         }
+
         public int getNextItem()
         {
             bool found = false;
@@ -290,7 +292,17 @@ public class Inventory : MonoBehaviour {
                 return null;
             }
         }
-        
+        public Items.seeds getSelectedSeed() //returns null if not a seed
+        {
+            if(curCategory=="seeds")
+            {
+                return seeds[curItem];
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
     // Use this for initialization
     void Start () {

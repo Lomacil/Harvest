@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class worldgenerator : MonoBehaviour {
-    Dictionary<long, GameObject> tilelog = new Dictionary<long, GameObject>();
+    public Dictionary<long, GameObject> tilelog = new Dictionary<long, GameObject>();
     int x = 10;
     int y = 10;
     int xcnt = 0;

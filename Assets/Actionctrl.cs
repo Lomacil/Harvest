@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Actionctrl : MonoBehaviour {
 
@@ -55,6 +56,36 @@ public class Actionctrl : MonoBehaviour {
                 overlay.setCurItem(curItem);
                 overlay.setCurItemName(bag.getName(curItem));
             }
+            if(Input.GetKeyDown("v"))
+            {
+                plant(curItem);
+            }
+            if(Input.GetKeyDown("enter"))
+            {
+                progress = true;
+                bool down = true;
+                while(down == true)
+                {
+                    if (GameObject.Find("Directional light").GetComponent<Light>().intensity > 0)
+                        GameObject.Find("Directional light").GetComponent<Light>().intensity -= Time.deltaTime;
+                    else
+                        down = false;
+                }
+                
+                foreach(KeyValuePair<long,GameObject> entry in world.tilelog)
+                {
+                    entry.Value.GetComponent<tileproperties>().grow();
+                }
+                bool up = true;
+                while(up == true)
+                {
+                    if (GameObject.Find("Directional light").GetComponent<Light>().intensity < 1)
+                        GameObject.Find("Directional light").GetComponent<Light>().intensity += Time.deltaTime;
+                    else
+                        up = false;
+                }
+                progress = false;
+            }
         }
         else
         {
@@ -69,25 +100,29 @@ public class Actionctrl : MonoBehaviour {
         curTool = bag.getSelectedTool();
         if (curTool != null)
         {
+            GameObject tile = world.getClosestTile(gameObject);
+            tileproperties prop = tile.GetComponent<tileproperties>();
             overlay.info = curTool.getPlowBonus().ToString();
-            if (curTool.getPlowBonus() > 0)
+            if (curTool.getPlowBonus() > 0&& !prop.getPlowed() && prop.getPlowable())
             {
-                
                 progress = true;
-                GameObject tile = world.getClosestTile(gameObject);
-                tileproperties prop = tile.GetComponent<tileproperties>();
                 overlay.castbar(workTime(bag.getSelectedTool().getPlowBonus()));
-                if (!prop.getPlowed() && prop.getPlowable())
-                {
-                    prop.setPlowed(tile);
-                }
+                prop.setPlowed(tile);
                 progress = false;
             }
         }
     }
-    void plant()
+    void plant(int ID)
     {
-
+        if(bag.getCurCategory()=="seeds"&&bag.getSelectedSeed()!=null)
+        {
+            GameObject tile = world.getClosestTile(gameObject);
+            tileproperties prop = tile.GetComponent<tileproperties>();
+            if(!prop.getPlanted()&&prop.getPlantable())
+            {
+                prop.setSeed(bag.getSelectedSeed());
+            }
+        }
     }
     float workTime(float multi)
     {
