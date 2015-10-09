@@ -5,46 +5,106 @@ public class Actionctrl : MonoBehaviour {
 
     public worldgenerator world;
     public Inventory inv;
+    public Itemlist list;
     public Items selectedItem;
-    Inventory.bag bag;
+    public Inventory.bag bag;
     public GUIoverlay overlay;
     public string curCategory;
-    int curItem;
+    public Items.tools curTool;
+    public int curItem;
+    bool progress;
     // Use this for initialization
     void Start () {
         world = GameObject.Find("wrldctrl").GetComponent<worldgenerator>();
         inv = GameObject.Find("wrldctrl").GetComponent<Inventory>();
+        list = GameObject.Find("wrldctrl").GetComponent<Itemlist>();
         bag = new Inventory.bag();
         overlay = GameObject.Find("wrldctrl").GetComponent<GUIoverlay>();
+        progress = false;
+        initInventory();
+        
 	}
-	
+	void initInventory()
+    {
+        bag.addToInventory(list.getSeed(2), 5);
+        bag.addToInventory(list.getSeed(3), 6);
+        bag.addToInventory(list.getSeed(4), 7);
+        bag.addToInventory(list.getPlant(5),4);
+        bag.addToInventory(list.getFruit(3),2);
+        bag.addToInventory(list.getTool(1));
+        bag.addToInventory(list.getTool(2));
+        bag.addToInventory(list.getTool(3));
+    }
 	// Update is called once per frame
 	void Update ()
     {
-	    if(Input.GetKeyDown("f"))
+        if (!progress)
         {
-            plow();
+            if (Input.GetKeyDown("f"))
+            {
+                plow();
+            }
+            if (Input.GetKeyDown("y"))
+            {
+                curCategory = bag.getNextItemCategory();
+                overlay.setCategory(curCategory);
+            }
+            if (Input.GetKeyDown("x"))
+            {
+                curItem = bag.getNextItem();
+                overlay.setCurItem(curItem);
+                overlay.setCurItemName(bag.getName(curItem));
+            }
         }
-        if(Input.GetKeyDown("y"))
+        else
         {
-            curCategory = bag.getNextItemCategory();
-            overlay.setCategory(curCategory);
-        }
-        if(Input.GetKeyDown("x"))
-        {
-            curItem = bag.getNextItem();
-            overlay.setCurItemName(bag.getName(curItem));
-            overlay.setCurItem(curItem);
+            if(Input.GetKeyDown("esc"))
+            {
+                //cancel current action
+            }
         }
 	}
     void plow()
     {
-        GameObject tile = world.getClosestTile(gameObject);
-        tileproperties prop = tile.GetComponent<tileproperties>();
-        if (!prop.getPlowed()&&prop.getPlowable())
+        curTool = bag.getSelectedTool();
+        if (curTool != null)
         {
-            prop.setPlowed(tile);
+            overlay.info = curTool.getPlowBonus().ToString();
+            if (curTool.getPlowBonus() > 0)
+            {
+                
+                progress = true;
+                GameObject tile = world.getClosestTile(gameObject);
+                tileproperties prop = tile.GetComponent<tileproperties>();
+                overlay.castbar(workTime(bag.getSelectedTool().getPlowBonus()));
+                if (!prop.getPlowed() && prop.getPlowable())
+                {
+                    prop.setPlowed(tile);
+                }
+                progress = false;
+            }
         }
+    }
+    void plant()
+    {
+
+    }
+    float workTime(float multi)
+    {
+        float time = 0;
+        if (multi != 0)
+        {
+            time = 10 / multi;
+        }
+        else
+        {
+            time = 0;
+        }
+        return time;
+    }
+    public string getItemName(int ID)
+    {
+        return bag.getName(ID);
     }
 
 }

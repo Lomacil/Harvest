@@ -9,8 +9,8 @@ public class worldgenerator : MonoBehaviour {
     int xcnt = 0;
     int ycnt = 0;
     long tilecnt = 0;
-    string test = "1";
-    int cnt = 1;
+    
+    
     public GameObject tile;
     GameObject closest = null;
 

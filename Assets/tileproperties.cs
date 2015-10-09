@@ -67,10 +67,15 @@ public class tileproperties : MonoBehaviour {
     public void setSeed(Items.seeds seedToSet)
     {
         seed = items.cloneSeed(seedToSet);
+        var rend = gameObject.GetComponent<Renderer>();
+        rend.material = seedTex;
     }
     public void setPlant(Items.plants plantToSet)
     {
         plant = items.clonePlant(plantToSet);
+        var rend = gameObject.GetComponent<Renderer>();
+        rend.material = plantTex;
+        planted = true;
         seed = null;
         
     }
@@ -81,11 +86,12 @@ public class tileproperties : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
+        planted = false;
         plowedTex = Resources.Load("Materials/plowed") as Material;
         
         items = GameObject.Find("wrldctrl").GetComponent<Itemlist>();
 
-        var rend = gameObject.GetComponent<MeshRenderer>();
+        var rend = gameObject.GetComponent<Renderer>();
         rend.enabled = true;
         rend.material = plantTex;
         initPlant(1);

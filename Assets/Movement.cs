@@ -7,7 +7,7 @@ public class Movement : MonoBehaviour {
     float runningSpeed;
     float currentSpeed;
     string lastDirection;
-    bool running;
+
     public string t;
 
     public void setSpeed(float speed)
@@ -20,7 +20,7 @@ public class Movement : MonoBehaviour {
         movingSpeed = 1;
         runningSpeed = 2;
         currentSpeed = movingSpeed;
-        running = false;
+
         world = GameObject.Find("wrldctrl").GetComponent<worldgenerator>();
 	}
 	public string getLastDirection()
@@ -33,12 +33,12 @@ public class Movement : MonoBehaviour {
         if(Input.GetKey("left shift"))
         {
             currentSpeed = runningSpeed;
-            running = true;
+
         }
         if(Input.GetKeyUp("left shift"))
         {
             currentSpeed = movingSpeed;
-            running = false;
+
         }
         if (Input.GetKey("a") && world.getClosestTileToDirection(transform.position, "west")!=null)
         {

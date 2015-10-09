@@ -4,7 +4,7 @@ using System.Collections;
 public class Items : MonoBehaviour {
 
 
-    public class seeds : Items
+    public class seeds
     {
         int seedID;
         string seedName;
@@ -36,6 +36,7 @@ public class Items : MonoBehaviour {
         {
             amount = amount + nr;
         }
+        
     }
 
     public class plants
@@ -147,20 +148,25 @@ public class Items : MonoBehaviour {
         float miningBonus = 0;
         float harvestBonus = 0;
         float woodcutingBonus = 0;
+        float hammeringBonus = 0;
+        float sawingBonus = 0;
 
-        public tools(int ID, string name, float dura)
+        public tools(int ID, string name, float dura, float plow, float mining, float harvest, float wood, float sawing, float hammering)
         {
             toolID = ID;
             toolName = name;
             durability = dura;
+            setBoni(plow, harvest, mining, wood, sawing, hammering);
 
         }
-        public void setBoni(float plow, float harvest, float mining, float woodcut)
+        public void setBoni(float plow, float harvest, float mining, float woodcut, float sawing, float hammering)
         {
             plowBonus = plow;
             harvestBonus = harvest;
             miningBonus = mining;
             woodcutingBonus = woodcut;
+            sawingBonus = sawing;
+            hammeringBonus = hammering;
         }
         public int getID()
         {
@@ -169,6 +175,34 @@ public class Items : MonoBehaviour {
         public string getName()
         {
             return toolName;
+        }
+        public float getDur()
+        {
+            return durability;
+        }
+        public float getHarvestBonus()
+        {
+            return harvestBonus;
+        }
+        public float getWoodcutBonus()
+        {
+            return woodcutingBonus;
+        }
+        public float getMiningBonus()
+        {
+            return miningBonus;
+        }
+        public float getPlowBonus()
+        {
+            return plowBonus;
+        }
+        public float getSawingBonus()
+        {
+            return sawingBonus;
+        }
+        public float getHammeringBonus()
+        {
+            return hammeringBonus;
         }
     }
 
